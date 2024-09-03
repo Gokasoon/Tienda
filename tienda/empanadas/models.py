@@ -29,6 +29,6 @@ class Composition(models.Model) :
     quantite = models.CharField(max_length = 100)
 
     def __str__(self) :
-        return self.ingredient.nomIngredient + "fait partie de l'empanada" \
-                + " '" + self.empanada.nomEmpanada + "' (qt: " + self.quantite + ")"
+        return self.ingredient.nomIngredient + " fait partie de l'empanada" \
+                + " '" + self.empanada.nomEmpanada + "' (qt: " + self.quantite + "g)"
     
