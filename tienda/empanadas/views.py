@@ -9,6 +9,16 @@ def empanadas(request) :
         { 'empanadas' : lesEmpanadas}
     )
 
+
+def empanada(request, empanada_id) :
+    laEmpanada = Empanada.objects.get(idEmpanada = empanada_id)
+    return render(
+        request,
+        'empanadas/empanada.html',
+        {'empanada' : laEmpanada}
+    )
+
+
 def ingredients(request) :
     lesIngredients = Ingredient.objects.all()
     return render(
