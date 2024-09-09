@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from empanadas.models import Empanada, Ingredient
+from empanadas.models import Empanada, Ingredient, Composition
 
 def empanadas(request) :
     lesEmpanadas = Empanada.objects.all()
@@ -12,10 +12,19 @@ def empanadas(request) :
 
 def empanada(request, empanada_id) :
     laEmpanada = Empanada.objects.get(idEmpanada = empanada_id)
+    compos = Composition.objects.filter(empanada = empanada_id)
+    recipe = {}
+
+    for compo in compos :
+        recipe[compo.ingredient] = compo.quantite 
+
+    print(recipe)
     return render(
         request,
         'empanadas/empanada.html',
-        {'empanada' : laEmpanada}
+        {'empanada' : laEmpanada,
+         'recette' : recipe},
+
     )
 
 

@@ -4,4 +4,20 @@
 
 {% block main %}
 <h2>{{empanada}}</h2>
+<table class="table table-sm table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Ingrédient</th>
+            <th>Quantité</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ingr, qt in recette.items %}
+        <tr>
+            <td>{{ingr.nomIngredient}}</td>
+            <td>{{qt}} gr</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
