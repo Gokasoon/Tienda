@@ -1,0 +1,22 @@
+footer { 
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: darkcyan;
+    color: white;
+    text-align: center;
+}
+
+nav { 
+    background-color: darkcyan;
+    margin-bottom: 2%;
+}
+
+#logo {
+    width: 10%;
+}
+
+.nav-item {
+    text-align: center;
+}
