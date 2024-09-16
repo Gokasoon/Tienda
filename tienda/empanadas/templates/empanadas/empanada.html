@@ -20,7 +20,26 @@
         {% endfor %}
     </tbody>
 </table>
-<button class="btn btn-primary">
-    Ajouter des ingrédients
-</button>
+<h2>Ajouter un ingrédient à la recette</h2>
+<form action="/empanada/{{empanada.idEmpanada}}/addIngredient" method="POST">
+    {% csrf_token %}
+    <div class="m-3">
+        <label for="id_ingredient" class="form-label">
+            Ingrédient
+        </label>
+        <select id="id_ingredient" name="ingredient" class="form-select" required>
+            <option selected disabled>Choisir</option>
+            {% for ingr in ingredients %}
+            <option value="{{ingr.idIngredient}}">{{ingr.nomIngredient}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="m-3">
+        <label for="id_quantite" class="form-label">
+            Quantité
+        </label>
+        <input id="id_quantite" name="quantite" type="text" maxlength="100" required class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+</form>
 {% endblock %}

@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from empanadas.models import Empanada, Ingredient, Composition
-from empanadas.forms import IngredientForm, EmpanadaForm
+from empanadas.forms import IngredientForm, EmpanadaForm, CompositionForm
 
 def empanadas(request) :
     lesEmpanadas = Empanada.objects.all()
@@ -14,6 +14,7 @@ def empanadas(request) :
 def empanada(request, empanada_id) :
     laEmpanada = Empanada.objects.get(idEmpanada = empanada_id)
     compos = Composition.objects.filter(empanada = empanada_id)
+    ingrs = Ingredient.objects.all()
     recipe = {}
 
     for compo in compos :
@@ -24,8 +25,8 @@ def empanada(request, empanada_id) :
         request,
         'empanadas/empanada.html',
         {'empanada' : laEmpanada,
-         'recette' : recipe},
-
+         'recette' : recipe,
+         'ingredients' : ingrs},
     )
 
 
@@ -86,4 +87,31 @@ def creerEmpanada(request) :
             request,
             'empanadas/formulaireNonValide.html',
             { 'erreurs' : form.errors },
+        )
+
+
+def ajouterIngredientEmpanada(request, empanada_id) :
+    form = CompositionForm(request.POST)
+    if form.is_valid() :
+        ingr = form.cleaned_data['ingredient']
+        qt = form.cleaned_data['quantite']
+        emp = Empanada.objects.get(idEmpanada=empanada_id)
+        recherche = Composition.objects.filter(empanada=empanada_id, ingredient=ingr.idIngredient)
+        
+        if recherche.count() > 0 :
+            ligne = recherche.first()
+        else :
+            ligne = Composition()
+            ligne.ingredient = ingr
+            ligne.empanada = emp
+        
+        ligne.quantite = qt
+        ligne.save()
+        return redirect('/empanada/%d' % empanada_id)
+    
+    else :
+        return render(
+            request,
+            'empanada/formulaireNonValide.html',
+            { 'erreurs' : form.errors},
         )

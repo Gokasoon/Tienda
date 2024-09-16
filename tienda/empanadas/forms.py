@@ -16,4 +16,4 @@ class EmpanadaForm(ModelForm) :
 class CompositionForm(ModelForm) :
     class Meta:
         model = Composition
-        fields = ['ingredient', 'empanada', 'quantite']
+        fields = ['ingredient', 'quantite']
