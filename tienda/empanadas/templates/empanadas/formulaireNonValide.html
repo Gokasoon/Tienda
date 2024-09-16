@@ -1,0 +1,14 @@
+{% extends 'empanadas/base.html' %}
+
+{% block title %}Formulaire non valide{% endblock %}
+
+{% block main %}
+<h2>Formulaire non valide</h2>
+<ul>
+    {% for err in erreurs %}
+    <li>
+        {{err}}
+    </li>
+    {% endfor %}
+</ul>>
+{% endblock %}
