@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from empanadas.models import Empanada, Ingredient, Composition
-from empanadas.forms import IngredientForm
+from empanadas.forms import IngredientForm, EmpanadaForm
 
 def empanadas(request) :
     lesEmpanadas = Empanada.objects.all()
@@ -57,6 +57,30 @@ def creerIngredient(request) :
             'empanadas/traitementFormulaireCreationIngredient.html',
             { 'nom' : nomIngr },
         )
+    else :
+        return render(
+            request,
+            'empanadas/formulaireNonValide.html',
+            { 'erreurs' : form.errors },
+        )
+
+def formulaireCreationEmpanada(request) :
+    return render(
+        request,
+        'empanadas/formulaireCreationEmpanada.html'
+    )
+
+
+def creerEmpanada(request) :
+    form = EmpanadaForm(request.POST)
+    if form.is_valid() :
+        nomEmp = form.cleaned_data['nomEmpanada']
+        prixEmp = form.cleaned_data['prix']
+        emp = Empanada()
+        emp.nomEmpanada = nomEmp
+        emp.prix = prixEmp
+        emp.save()
+        return empanada(request, emp.idEmpanada)
     else :
         return render(
             request,

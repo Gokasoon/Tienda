@@ -4,11 +4,7 @@
 
 {% block main %}
 <h2>Formulaire non valide</h2>
-<ul>
-    {% for err in erreurs %}
-    <li>
-        {{err}}
-    </li>
-    {% endfor %}
-</ul>>
+<p>
+    {{erreurs}}
+</p>
 {% endblock %}

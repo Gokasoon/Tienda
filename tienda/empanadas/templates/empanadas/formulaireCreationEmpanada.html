@@ -1,0 +1,25 @@
+{% extends 'empanadas/base.html' %}
+
+{% block title %}Création d'une empanada{% endblock %}
+
+{% block main %}
+<h2>Création d'une empanada</h2>
+<form action="/empanadas/create" method="post">
+    {% csrf_token %}
+    <div class="m-3">
+        <label for="id_nomEmpanada" class="form-label">
+            Le nom de l'empanada
+        </label>
+        <input id="id_nomEmpanada" name="nomEmpanada" type="text" maxlength="50" required class="form-control"/>
+    </div>
+    <div class="m-3">
+        <label for="id_prix" class="form-label">
+            Le prix de l'empanada
+        </label>
+        <input id="id_prix" name="prix" type="number" step=".01" maxlength="50" required class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        Envoyer
+    </button>
+</form>
+{% endblock %}
