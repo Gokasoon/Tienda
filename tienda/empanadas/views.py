@@ -29,6 +29,32 @@ def empanada(request, empanada_id) :
          'ingredients' : ingrs},
     )
 
+def supprimerEmpanada(request, empanada_id) :
+    empanada = Empanada.objects.get(idEmpanada = empanada_id)
+    empanada.delete()
+    return redirect('/empanadas')
+
+
+def afficherFormulaireModificationEmpanada(request, empanada_id) :
+    emp = Empanada.objects.get(idEmpanada = empanada_id)
+    return render(
+        request,
+        'empanadas/formulaireModificationEmpanada.html',
+        { 'empanada' : emp }
+    )
+
+def modifierEmpanada(request, empanada_id) :
+    emp = Empanada.objects.get(idEmpanada = empanada_id)
+    form = EmpanadaForm(request.POST, instance=emp)
+    if form.is_valid() :
+        form.save()
+        return redirect('/empanada/%d' % empanada_id)
+    else :
+        return render(
+            request,
+            'empanadas/formulaireNonValide.html',
+            { 'erreurs' : form.errors },
+        )
 
 def ingredients(request) :
     lesIngredients = Ingredient.objects.all()
