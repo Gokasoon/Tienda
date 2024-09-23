@@ -20,18 +20,19 @@ from empanadas import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('empanadas/', views.empanadas),
     path('ingredients/', views.ingredients),
     path('ingredients/create', views.creerIngredient),
     path('ingredients/add', views.formulaireCreationIngredient),
     path('ingredients/<int:ingredient_id>/delete/', views.supprimerIngredient),
     path('ingredients/<int:ingredient_id>/update/', views.afficherFormulaireModificationIngredient),
     path('ingredients/<int:ingredient_id>/updated/', views.modifierIngredient),
+    path('empanadas/', views.empanadas),
+    path('empanadas/add', views.formulaireCreationEmpanada),
+    path('empanadas/create', views.creerEmpanada),
     path('empanada/<int:empanada_id>', views.empanada),
     path('empanada/<int:empanada_id>/delete/', views.supprimerEmpanada),
     path('empanada/<int:empanada_id>/update/', views.afficherFormulaireModificationEmpanada),
     path('empanada/<int:empanada_id>/updated/', views.modifierEmpanada),
-    path('empanadas/add', views.formulaireCreationEmpanada),
-    path('empanadas/create', views.creerEmpanada),
     path('empanada/<int:empanada_id>/addIngredient', views.ajouterIngredientEmpanada),
+    path('empanada/<int:empanada_id>/deleteIngredient/<int:ingredient_id>', views.supprimerIngredientEmpanada),
 ]

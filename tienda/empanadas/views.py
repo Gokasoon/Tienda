@@ -167,3 +167,10 @@ def supprimerIngredient(request, ingredient_id) :
     ingr = Ingredient.objects.get(idIngredient = ingredient_id)
     ingr.delete()
     return redirect('/ingredients')
+
+
+def supprimerIngredientEmpanada(request, empanada_id, ingredient_id) :
+    compo = Composition.objects.get(empanada = empanada_id, ingredient = ingredient_id)
+    compo.delete()
+    return redirect('/empanada/%d' % empanada_id)
+    
