@@ -6,7 +6,11 @@
 <h2>Voici nos {{ingredients|length}} ingrédients</h2>
 <ul>
     {% for ingr in ingredients %}
-    <li>{{ingr}}</li>
+    <li>
+        {{ingr}} 
+        | <a href="/ingredients/{{ingr.idIngredient}}/update">modifier</a>
+        | <a href="/ingredients/{{ingr.idIngredient}}/delete">supprimer</a>
+    </li>
     {% endfor %}
 </ul>
 {% endblock %}

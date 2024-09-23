@@ -141,3 +141,29 @@ def ajouterIngredientEmpanada(request, empanada_id) :
             'empanada/formulaireNonValide.html',
             { 'erreurs' : form.errors},
         )
+
+def afficherFormulaireModificationIngredient(request, ingredient_id) :
+    ingr = Ingredient.objects.get(idIngredient = ingredient_id)
+    return render(
+        request,
+        'empanadas/formulaireModificationIngredient.html',
+        { 'ingredient' : ingr }
+    )
+
+def modifierIngredient(request, ingredient_id) :
+    ingr = Ingredient.objects.get(idIngredient = ingredient_id)
+    form = IngredientForm(request.POST, instance=ingr)
+    if form.is_valid() :
+        form.save()
+        return redirect('/ingredients')
+    else :
+        return render(
+            request,
+            'empanadas/formulaireNonValide.html',
+            { 'erreurs' : form.errors },
+        )
+
+def supprimerIngredient(request, ingredient_id) :
+    ingr = Ingredient.objects.get(idIngredient = ingredient_id)
+    ingr.delete()
+    return redirect('/ingredients')
