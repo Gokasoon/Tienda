@@ -14,6 +14,7 @@ class Empanada(models.Model) :
     idEmpanada = models.AutoField(primary_key = True)
     nomEmpanada = models.CharField(max_length = 50)
     prix = models.DecimalField(max_digits = 6, decimal_places = 2)
+    image = models.ImageField(default = 'imagesEmpanadas/default.png', upload_to = 'imagesEmpanadas/')
 
     def __str__(self) :
         return 'empanada ' + self.nomEmpanada + ' (prix: ' + str(self.prix) + '€)'

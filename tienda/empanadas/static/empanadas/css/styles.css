@@ -7,7 +7,7 @@ footer {
     color: white;
     text-align: center;
 }
-
+    
 nav { 
     background-color: darkcyan;
 }
@@ -19,4 +19,8 @@ nav {
 
 .nav-item {
     text-align: center;
+}
+
+.card-img-top {
+    width: 75%;
 }
