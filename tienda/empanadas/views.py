@@ -47,7 +47,8 @@ def modifierEmpanada(request, empanada_id) :
     emp = Empanada.objects.get(idEmpanada = empanada_id)
     form = EmpanadaForm(request.POST, instance=emp)
     if form.is_valid() :
-        form.save()
+        emp.image = request.FILES['image']
+        emp.save()
         return redirect('/empanada/%d' % empanada_id)
     else :
         return render(
@@ -106,6 +107,7 @@ def creerEmpanada(request) :
         emp = Empanada()
         emp.nomEmpanada = nomEmp
         emp.prix = prixEmp
+        emp.image = request.FILES['image']
         emp.save()
         return empanada(request, emp.idEmpanada)
     else :

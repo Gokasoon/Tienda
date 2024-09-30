@@ -2,7 +2,7 @@
 {% block title %}Modification de l'empanada{{empanada.nomEmpanada}}{% endblock %}
 {% block main %}
 <h2>Modification de l'empanada {{empanada.nomEmpanada}}</h2>
-<form action="/empanada/{{empanada.idEmpanada}}/updated/" method="post">
+<form action="/empanada/{{empanada.idEmpanada}}/updated/" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="m-3">
         <label for="id_nomEmpanada" class="form-label">
@@ -15,6 +15,16 @@
             Le prix de l'empanada
         </label>
         <input id="id_prix" name="prix" value="{{empanada.prix}}" type="number" step=".01" maxlength="50" required class="form-control"/>
+    </div>
+    <div class="m-3">
+        <figure class="w-25 text-center m-auto">
+            <img src="{{MEDIA_URL}}{{empanada.image}}" class="image-fluid" style="width: 95%;"/>
+            <figcaption>image actuelle : {{empanada.image}} </figcaption>
+        </figure>
+        <label for="id_image" class="form-label">
+            Nouvelle Image
+        </label>
+        <input id="id_image" name="image" type="file" accept="image/*" class="form-control"/>
     </div>
     <button type="submit" class="btn btn-primary">
         Envoyer
