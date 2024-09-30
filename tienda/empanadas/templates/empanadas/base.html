@@ -10,7 +10,13 @@
 </head>
 <body>
     <header>
-        {% include 'empanadas/menu.html' %}
+        {% if user.is_staff %}
+        {% include 'comptes/menuStaff.html' %}
+        {% elif user.is_authenticated %}
+        {% include 'comptes/menuClient.html' %}
+        {% else %}
+        {% include 'comptes/menuNonConnecte.html' %}
+        {% endif %}
     </header>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <main>
