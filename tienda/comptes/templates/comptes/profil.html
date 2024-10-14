@@ -1,0 +1,45 @@
+{% extends 'empanadas/base.html' %}
+{% block title %} Profil {% endblock %}
+{% block main %}
+<h2>Votre compte</h2>
+<form id="form_profil" action="/user/updated/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="m-3">
+        <label for="id_username" class="form-label">
+            identfiant
+        </label>
+        <input id="id_username" name="username" value="{{user.username}}" type="text" maxlength="50" required class="form-control"/>
+    </div>
+    <div class="m-3">
+        <label for="id_firstname" class="form-label">
+            Prénom
+        </label>
+        <input id="id_firstname" name="first_name" value="{{user.first_name}}" type="text" maxlength="50" required class="form-control"/>
+    </div>
+    <div class="m-3">
+        <label for="id_lastname" class="form-label">
+            Nom
+        </label>
+        <input id="id_lastname" name="last_name" value="{{user.last_name}}" type="text" maxlength="50" required class="form-control"/>
+    </div>
+    <div class="m-3">
+        <label for="id_email" class="form-label">
+            Email
+        </label>
+        <input id="id_email" name="email" value="{{user.email}}" type="email" maxlength="50" required class="form-control"/>
+    </div>
+    <div class="m-3">
+        <figure class="w-25 text-center m-auto">
+            <img src="{{MEDIA_URL}}{{user.image}}" class="image-fluid" style="width: 95%;"/>
+            <figcaption>Avatar actuel </figcaption>
+        </figure>
+        <label for="id_image" class="form-label">
+            Nouvel avatar
+        </label>
+        <input id="id_image" name="image" type="file" accept="image/*" class="form-control"/>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        Envoyer
+    </button>
+</form>
+{% endblock %}
