@@ -98,30 +98,50 @@ def ingredients(request) :
 
 
 def formulaireCreationIngredient(request) :
-    return render(
-        request,
-        'empanadas/formulaireCreationIngredient.html'
-    )
-
+    user = None
+    if request.user.is_staff :
+        user = User.objects.get(id=request.user.id)
+        return render(
+            request,
+            'empanadas/formulaireCreationIngredient.html',
+            { 'user' : user },
+        )
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
+    else :
+        return redirect('/login')
 
 def creerIngredient(request) :
-    form = IngredientForm(request.POST)
-    if form.is_valid() :
-        nomIngr = form.cleaned_data['nomIngredient']
-        ingr = Ingredient()
-        ingr.nomIngredient = nomIngr
-        ingr.save()
-        return render(
-            request,
-            'empanadas/traitementFormulaireCreationIngredient.html',
-            { 'nom' : nomIngr },
-        )
+    user = None
+    if request.user.is_staff :
+        user = User.objects.get(id=request.user.id)
+        form = IngredientForm(request.POST)
+        if form.is_valid() :
+            nomIngr = form.cleaned_data['nomIngredient']
+            ingr = Ingredient()
+            ingr.nomIngredient = nomIngr
+            ingr.save()
+            return render(
+                request,
+                'empanadas/traitementFormulaireCreationIngredient.html',
+                { 
+                    'nom' : nomIngr,
+                    'user' : user
+                },
+            )
+        else :
+            return render(
+                request,
+                'empanadas/formulaireNonValide.html',
+                { 
+                    'erreurs' : form.errors,
+                    'user' : user
+                },
+            )
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
     else :
-        return render(
-            request,
-            'empanadas/formulaireNonValide.html',
-            { 'erreurs' : form.errors },
-        )
+        return redirect('/login')
 
 def formulaireCreationEmpanada(request) :
     user = None
