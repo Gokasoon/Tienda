@@ -213,25 +213,39 @@ def ajouterIngredientEmpanada(request, empanada_id) :
         )
 
 def afficherFormulaireModificationIngredient(request, ingredient_id) :
-    ingr = Ingredient.objects.get(idIngredient = ingredient_id)
-    return render(
-        request,
-        'empanadas/formulaireModificationIngredient.html',
-        { 'ingredient' : ingr }
-    )
-
-def modifierIngredient(request, ingredient_id) :
-    ingr = Ingredient.objects.get(idIngredient = ingredient_id)
-    form = IngredientForm(request.POST, instance=ingr)
-    if form.is_valid() :
-        form.save()
-        return redirect('/ingredients')
-    else :
+    user = None
+    if request.user.is_staff :
+        user = User.objects.get(id=request.user.id)
+        ingr = Ingredient.objects.get(idIngredient = ingredient_id)
         return render(
             request,
-            'empanadas/formulaireNonValide.html',
-            { 'erreurs' : form.errors },
+            'empanadas/formulaireModificationIngredient.html',
+            { 'ingredient' : ingr, 'user' : user }
         )
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
+    else :
+        return redirect('/login')
+
+def modifierIngredient(request, ingredient_id) :
+    user = None
+    if request.user.is_staff :
+        user = User.objects.get(id=request.user.id)
+        ingr = Ingredient.objects.get(idIngredient = ingredient_id)
+        form = IngredientForm(request.POST, instance=ingr)
+        if form.is_valid() :
+            form.save()
+            return redirect('/ingredients')
+        else :
+            return render(
+                request,
+                'empanadas/formulaireNonValide.html',
+                { 'erreurs' : form.errors, 'user' : user },
+            )
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
+    else :
+        return redirect('/login')
 
 def supprimerIngredient(request, ingredient_id) :
     ingr = Ingredient.objects.get(idIngredient = ingredient_id)
