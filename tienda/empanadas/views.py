@@ -37,26 +37,46 @@ def supprimerEmpanada(request, empanada_id) :
 
 
 def afficherFormulaireModificationEmpanada(request, empanada_id) :
-    emp = Empanada.objects.get(idEmpanada = empanada_id)
-    return render(
-        request,
-        'empanadas/formulaireModificationEmpanada.html',
-        { 'empanada' : emp }
-    )
-
-def modifierEmpanada(request, empanada_id) :
-    emp = Empanada.objects.get(idEmpanada = empanada_id)
-    form = EmpanadaForm(request.POST, instance=emp)
-    if form.is_valid() :
-        emp.image = request.FILES['image']
-        emp.save()
-        return redirect('/empanada/%d' % empanada_id)
-    else :
+    user = None
+    if request.user.is_staff : 
+        emp = Empanada.objects.get(idEmpanada = empanada_id)
+        user = User.objects.get(id=request.user.id)
         return render(
             request,
-            'empanadas/formulaireNonValide.html',
-            { 'erreurs' : form.errors },
+            'empanadas/formulaireModificationEmpanada.html',
+            { 
+                'empanada' : emp,
+                'user' : user
+            },
         )
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
+    else :
+        return redirect('/login')
+
+def modifierEmpanada(request, empanada_id) :
+    user = None
+    if request.user.is_staff :
+        user = User.objects.get(id=request.user.id)
+        emp = Empanada.objects.get(idEmpanada = empanada_id)
+        form = EmpanadaForm(request.POST, instance=emp)
+        if form.is_valid() :
+            emp.image = request.FILES['image']
+            emp.save()
+            return redirect('/empanada/%d' % empanada_id)
+        else :
+            return render(
+                request,
+                'empanadas/formulaireNonValide.html',
+                { 
+                    'erreurs' : form.errors,
+                    'user' : user
+                },
+            )
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
+    else :
+        return redirect('/login')
 
 def ingredients(request) :
     user = None
@@ -106,9 +126,11 @@ def creerIngredient(request) :
 def formulaireCreationEmpanada(request) :
     user = None
     if request.user.is_staff :    
+        user = User.objects.get(id=request.user.id)
         return render(
             request,
-            'empanadas/formulaireCreationEmpanada.html'
+            'empanadas/formulaireCreationEmpanada.html',
+            { 'user' : user },
         )
     elif request.user.is_authenticated :
         return redirect('/empanadas')
@@ -119,6 +141,7 @@ def formulaireCreationEmpanada(request) :
 def creerEmpanada(request) :
     user = None
     if request.user.is_staff :
+        user = User.objects.get(id=request.user.id)
         form = EmpanadaForm(request.POST)
         if form.is_valid() :
             nomEmp = form.cleaned_data['nomEmpanada']
@@ -133,10 +156,13 @@ def creerEmpanada(request) :
             return render(
                 request,
                 'empanadas/formulaireNonValide.html',
-                { 'erreurs' : form.errors },
+                { 
+                    'erreurs' : form.errors,
+                    'user' : user
+                },
             )
     elif request.user.is_authenticated :
-        return redirect('/empandas')
+        return redirect('/empanadas')
     else :
         return redirect('/login')
 
