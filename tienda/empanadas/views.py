@@ -104,30 +104,41 @@ def creerIngredient(request) :
         )
 
 def formulaireCreationEmpanada(request) :
-    return render(
-        request,
-        'empanadas/formulaireCreationEmpanada.html'
-    )
+    user = None
+    if request.user.is_staff :    
+        return render(
+            request,
+            'empanadas/formulaireCreationEmpanada.html'
+        )
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
+    else :
+        return redirect('/login')
 
 
 def creerEmpanada(request) :
-    form = EmpanadaForm(request.POST)
-    if form.is_valid() :
-        nomEmp = form.cleaned_data['nomEmpanada']
-        prixEmp = form.cleaned_data['prix']
-        emp = Empanada()
-        emp.nomEmpanada = nomEmp
-        emp.prix = prixEmp
-        emp.image = request.FILES['image']
-        emp.save()
-        return empanada(request, emp.idEmpanada)
+    user = None
+    if request.user.is_staff :
+        form = EmpanadaForm(request.POST)
+        if form.is_valid() :
+            nomEmp = form.cleaned_data['nomEmpanada']
+            prixEmp = form.cleaned_data['prix']
+            emp = Empanada()
+            emp.nomEmpanada = nomEmp
+            emp.prix = prixEmp
+            emp.image = request.FILES['image']
+            emp.save()
+            return empanada(request, emp.idEmpanada)
+        else :
+            return render(
+                request,
+                'empanadas/formulaireNonValide.html',
+                { 'erreurs' : form.errors },
+            )
+    elif request.user.is_authenticated :
+        return redirect('/empandas')
     else :
-        return render(
-            request,
-            'empanadas/formulaireNonValide.html',
-            { 'erreurs' : form.errors },
-        )
-
+        return redirect('/login')
 
 def ajouterIngredientEmpanada(request, empanada_id) :
     form = CompositionForm(request.POST)
