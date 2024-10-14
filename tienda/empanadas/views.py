@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from empanadas.models import Empanada, Ingredient, Composition
 from empanadas.forms import IngredientForm, EmpanadaForm, CompositionForm
+from django.contrib.auth.models import User
 
 def empanadas(request) :
     lesEmpanadas = Empanada.objects.all()
@@ -58,12 +59,22 @@ def modifierEmpanada(request, empanada_id) :
         )
 
 def ingredients(request) :
-    lesIngredients = Ingredient.objects.all()
-    return render(
-        request,
-        'empanadas/ingredients.html',
-        { 'ingredients' : lesIngredients}
-    )
+    user = None
+    if request.user.is_staff :
+        lesIngredients = Ingredient.objects.all()
+        user = User.objects.get(id=request.user.id)
+        return render(
+            request,
+            'empanadas/ingredients.html',
+            { 
+                'ingredients' : lesIngredients,
+                'user' : user
+            },
+        )
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
+    else :
+        return redirect('/login')
 
 
 def formulaireCreationIngredient(request) :
