@@ -31,9 +31,16 @@ def empanada(request, empanada_id) :
     )
 
 def supprimerEmpanada(request, empanada_id) :
-    empanada = Empanada.objects.get(idEmpanada = empanada_id)
-    empanada.delete()
-    return redirect('/empanadas')
+    user = None
+    if request.user.is_staff :
+        user = User.objects.get(id=request.user.id)
+        empanada = Empanada.objects.get(idEmpanada = empanada_id)
+        empanada.delete()
+        return redirect('/empanadas')
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
+    else :
+        return redirect('/login')
 
 
 def afficherFormulaireModificationEmpanada(request, empanada_id) :
@@ -169,7 +176,11 @@ def creerEmpanada(request) :
             emp = Empanada()
             emp.nomEmpanada = nomEmp
             emp.prix = prixEmp
-            emp.image = request.FILES['image']
+            img = request.FILES.get('image')
+            if img :
+                emp.image = img
+            else:
+                emp.image = "imagesEmpanadas/default.png"
             emp.save()
             return empanada(request, emp.idEmpanada)
         else :
@@ -187,30 +198,37 @@ def creerEmpanada(request) :
         return redirect('/login')
 
 def ajouterIngredientEmpanada(request, empanada_id) :
-    form = CompositionForm(request.POST)
-    if form.is_valid() :
-        ingr = form.cleaned_data['ingredient']
-        qt = form.cleaned_data['quantite']
-        emp = Empanada.objects.get(idEmpanada=empanada_id)
-        recherche = Composition.objects.filter(empanada=empanada_id, ingredient=ingr.idIngredient)
+    user = None
+    if request.user.is_staff :
+        user = User.objects.get(id=request.user.id)
+        form = CompositionForm(request.POST)
+        if form.is_valid() :
+            ingr = form.cleaned_data['ingredient']
+            qt = form.cleaned_data['quantite']
+            emp = Empanada.objects.get(idEmpanada=empanada_id)
+            recherche = Composition.objects.filter(empanada=empanada_id, ingredient=ingr.idIngredient)
+            
+            if recherche.count() > 0 :
+                ligne = recherche.first()
+            else :
+                ligne = Composition()
+                ligne.ingredient = ingr
+                ligne.empanada = emp
+            
+            ligne.quantite = qt
+            ligne.save()
+            return redirect('/empanada/%d' % empanada_id)
         
-        if recherche.count() > 0 :
-            ligne = recherche.first()
         else :
-            ligne = Composition()
-            ligne.ingredient = ingr
-            ligne.empanada = emp
-        
-        ligne.quantite = qt
-        ligne.save()
-        return redirect('/empanada/%d' % empanada_id)
-    
+            return render(
+                request,
+                'empanada/formulaireNonValide.html',
+                { 'erreurs' : form.errors, 'user' : user },
+            )
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
     else :
-        return render(
-            request,
-            'empanada/formulaireNonValide.html',
-            { 'erreurs' : form.errors},
-        )
+        return redirect('/login')
 
 def afficherFormulaireModificationIngredient(request, ingredient_id) :
     user = None
@@ -248,13 +266,27 @@ def modifierIngredient(request, ingredient_id) :
         return redirect('/login')
 
 def supprimerIngredient(request, ingredient_id) :
-    ingr = Ingredient.objects.get(idIngredient = ingredient_id)
-    ingr.delete()
-    return redirect('/ingredients')
+    user = None
+    if request.user.is_staff :
+        user = User.objects.get(id=request.user.id)
+        ingr = Ingredient.objects.get(idIngredient = ingredient_id)
+        ingr.delete()
+        return redirect('/ingredients')
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
+    else :
+        return redirect('/login')
 
 
 def supprimerIngredientEmpanada(request, empanada_id, ingredient_id) :
-    compo = Composition.objects.get(empanada = empanada_id, ingredient = ingredient_id)
-    compo.delete()
-    return redirect('/empanada/%d' % empanada_id)
+    user = None
+    if request.user.is_staff :
+        user = User.objects.get(id=request.user.id)
+        compo = Composition.objects.get(empanada = empanada_id, ingredient = ingredient_id)
+        compo.delete()
+        return redirect('/empanada/%d' % empanada_id)
+    elif request.user.is_authenticated :
+        return redirect('/empanadas')
+    else :
+        return redirect('/login')
     
