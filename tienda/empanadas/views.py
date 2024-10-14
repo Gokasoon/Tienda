@@ -2,17 +2,25 @@ from django.shortcuts import render, redirect
 from empanadas.models import Empanada, Ingredient, Composition
 from empanadas.forms import IngredientForm, EmpanadaForm, CompositionForm
 from django.contrib.auth.models import User
+from comptes.models import TiendaUser
 
 def empanadas(request) :
+    user = None 
+    if request.user.is_authenticated :
+        user = TiendaUser.objects.get(id=request.user.id)
     lesEmpanadas = Empanada.objects.all()
     return render(
         request,
         'empanadas/empanadas.html',
-        { 'empanadas' : lesEmpanadas}
+        { 'empanadas' : lesEmpanadas,
+          'user' : user,}
     )
 
 
 def empanada(request, empanada_id) :
+    user = None
+    if request.user.is_authenticated :
+        user = TiendaUser.objects.get(id=request.user.id)
     laEmpanada = Empanada.objects.get(idEmpanada = empanada_id)
     compos = Composition.objects.filter(empanada = empanada_id)
     ingrs = Ingredient.objects.all()
@@ -27,13 +35,14 @@ def empanada(request, empanada_id) :
         'empanadas/empanada.html',
         {'empanada' : laEmpanada,
          'recette' : recipe,
-         'ingredients' : ingrs},
+         'ingredients' : ingrs,
+         'user' : user },
     )
 
 def supprimerEmpanada(request, empanada_id) :
     user = None
     if request.user.is_staff :
-        user = User.objects.get(id=request.user.id)
+        user = TiendaTiendaUser.objects.get(id=request.user.id)
         empanada = Empanada.objects.get(idEmpanada = empanada_id)
         empanada.delete()
         return redirect('/empanadas')
@@ -47,7 +56,7 @@ def afficherFormulaireModificationEmpanada(request, empanada_id) :
     user = None
     if request.user.is_staff : 
         emp = Empanada.objects.get(idEmpanada = empanada_id)
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         return render(
             request,
             'empanadas/formulaireModificationEmpanada.html',
@@ -64,7 +73,7 @@ def afficherFormulaireModificationEmpanada(request, empanada_id) :
 def modifierEmpanada(request, empanada_id) :
     user = None
     if request.user.is_staff :
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         emp = Empanada.objects.get(idEmpanada = empanada_id)
         form = EmpanadaForm(request.POST, instance=emp)
         if form.is_valid() :
@@ -89,7 +98,7 @@ def ingredients(request) :
     user = None
     if request.user.is_staff :
         lesIngredients = Ingredient.objects.all()
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         return render(
             request,
             'empanadas/ingredients.html',
@@ -107,7 +116,7 @@ def ingredients(request) :
 def formulaireCreationIngredient(request) :
     user = None
     if request.user.is_staff :
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         return render(
             request,
             'empanadas/formulaireCreationIngredient.html',
@@ -121,7 +130,7 @@ def formulaireCreationIngredient(request) :
 def creerIngredient(request) :
     user = None
     if request.user.is_staff :
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         form = IngredientForm(request.POST)
         if form.is_valid() :
             nomIngr = form.cleaned_data['nomIngredient']
@@ -153,7 +162,7 @@ def creerIngredient(request) :
 def formulaireCreationEmpanada(request) :
     user = None
     if request.user.is_staff :    
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         return render(
             request,
             'empanadas/formulaireCreationEmpanada.html',
@@ -168,7 +177,7 @@ def formulaireCreationEmpanada(request) :
 def creerEmpanada(request) :
     user = None
     if request.user.is_staff :
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         form = EmpanadaForm(request.POST)
         if form.is_valid() :
             nomEmp = form.cleaned_data['nomEmpanada']
@@ -200,7 +209,7 @@ def creerEmpanada(request) :
 def ajouterIngredientEmpanada(request, empanada_id) :
     user = None
     if request.user.is_staff :
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         form = CompositionForm(request.POST)
         if form.is_valid() :
             ingr = form.cleaned_data['ingredient']
@@ -233,7 +242,7 @@ def ajouterIngredientEmpanada(request, empanada_id) :
 def afficherFormulaireModificationIngredient(request, ingredient_id) :
     user = None
     if request.user.is_staff :
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         ingr = Ingredient.objects.get(idIngredient = ingredient_id)
         return render(
             request,
@@ -248,7 +257,7 @@ def afficherFormulaireModificationIngredient(request, ingredient_id) :
 def modifierIngredient(request, ingredient_id) :
     user = None
     if request.user.is_staff :
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         ingr = Ingredient.objects.get(idIngredient = ingredient_id)
         form = IngredientForm(request.POST, instance=ingr)
         if form.is_valid() :
@@ -268,7 +277,7 @@ def modifierIngredient(request, ingredient_id) :
 def supprimerIngredient(request, ingredient_id) :
     user = None
     if request.user.is_staff :
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         ingr = Ingredient.objects.get(idIngredient = ingredient_id)
         ingr.delete()
         return redirect('/ingredients')
@@ -281,7 +290,7 @@ def supprimerIngredient(request, ingredient_id) :
 def supprimerIngredientEmpanada(request, empanada_id, ingredient_id) :
     user = None
     if request.user.is_staff :
-        user = User.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         compo = Composition.objects.get(empanada = empanada_id, ingredient = ingredient_id)
         compo.delete()
         return redirect('/empanada/%d' % empanada_id)
