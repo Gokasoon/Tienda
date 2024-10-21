@@ -1,6 +1,6 @@
 # tienda
 
-TP 15 - Exercice 1
+TP 15 - Exercice 3
 
 ![Pingouin Mexicain](./tienda/empanadas/static/empanadas/img/mexicanPingouin.png)
 
