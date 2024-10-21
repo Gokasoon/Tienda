@@ -1,0 +1,44 @@
+{% extends 'empanadas/base.html' %}
+
+{% block title %} Panier {% endblock %}
+
+{% block main %}
+<div class="container mt-5">
+    <h1 class="mb-4">Mon Panier</h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Empanada</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ligne in lignes %}
+            <tr>
+                <td>
+                    <a href="/empanada/{{ ligne.empanada.idEmpanada }}" class="text-primary">{{ ligne.empanada.nomEmpanada }}</a>
+                </td>
+                <td>{{ ligne.quantite }}</td>
+                <td>{{ ligne.prix }} €</td> 
+                <td>
+                    <a href="/cart/{{ ligne.empanada.idEmpanada }}/buy/" class="btn btn-sm btn-success">+1</a>
+                    <a href="/cart/{{ ligne.empanada.idEmpanada }}/decrease/" class="btn btn-sm btn-warning">-1</a>
+                    <a href="/cart/{{ ligne.empanada.idEmpanada }}/delete/" class="btn btn-sm btn-danger">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2" class="font-weight-bold">Total</td>
+                <td class="font-weight-bold">{{ total }} €</td>
+                <td>
+                    <a href="/cart/delete/" class="btn btn-danger">Vider le panier</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}
