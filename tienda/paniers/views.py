@@ -8,12 +8,11 @@ def afficherPanier(request) :
     lignes = []
     user = TiendaUser.objects.get(id=request.user.id)
     non_payees = Commande.objects.filter(utilisateur=user, est_payee=False)
+    total_global = 0  
 
     if non_payees.exists():
         panier = non_payees[0]
         lignes = LigneCommande.objects.filter(commande=panier)
-
-        total_global = 0
         for ligne in lignes: 
             total_global += ligne.prix  
 
@@ -81,6 +80,7 @@ def retirerDuPanier(request, empanada_id) :
     ligne_empanada.delete()
 
     lignes = LigneCommande.objects.filter(commande=panier)
+    print(lignes)
     if lignes is None :
         panier.delete()
     else :
@@ -88,3 +88,13 @@ def retirerDuPanier(request, empanada_id) :
 
     return redirect('/cart')
 
+
+def viderPanier(request) :
+    user = TiendaUser.objects.get(id=request.user.id)
+    non_payees = Commande.objects.filter(utilisateur=user, est_payee=False)
+
+    if non_payees.exists() :
+        panier = non_payees[0]
+        panier.delete()
+
+    return redirect('/cart')
