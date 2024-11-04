@@ -67,13 +67,13 @@ def retirerDuPanier(request, empanada_id) :
     if non_payees.exists() :
         panier = non_payees[0]
     else :
-        redirect('/cart')
+        return redirect('/cart')
 
     lignes = LigneCommande.objects.filter(commande=panier)
     ligne_empanada = lignes.filter(empanada=empanada).first()
 
     if ligne_empanada is None :
-        redirect('/cart')
+        return redirect('/cart')
 
     panier.prix_total -= ligne_empanada.prix
 
@@ -125,3 +125,28 @@ def retirerUneEmpanadaDuPanier(request, empanada_id) :
             ligne_empanada.save()
 
     return redirect('/cart')
+
+
+def payerPanier(request) :
+    user = TiendaUser.objects.get(id=request.user.id)
+    non_payees = Commande.objects.filter(utilisateur=user, est_payee=False)
+
+    if non_payees.exists() :
+        panier = non_payees[0]
+    else :
+        return redirect('/cart')
+
+    panier.est_payee = True
+    panier.save()
+
+    return render(
+        request,
+        'paniers/avisPaiement.html',
+        {
+            'user' : user,
+            'panier' : panier,
+        },
+    )
+
+
+    
