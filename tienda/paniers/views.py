@@ -58,3 +58,33 @@ def ajouterEmpanadaAuPanier(request, empanada_id):
     ligne_empanada.save()
 
     return redirect('/cart')
+
+
+def retirerDuPanier(request, empanada_id) :
+    user = TiendaUser.objects.get(id=request.user.id)
+    empanada = Empanada.objects.get(idEmpanada=empanada_id)  
+    non_payees = Commande.objects.filter(utilisateur=user, est_payee=False)
+
+    if non_payees.exists() :
+        panier = non_payees[0]
+    else :
+        redirect('/empanadas')
+
+    lignes = LigneCommande.objects.filter(commande=panier)
+    ligne_empanada = lignes.filter(empanada=empanada).first()
+
+    if ligne_empanada is None :
+        redirect('/empanadas')
+
+    panier.prix_total -= ligne_empanada.prix
+
+    ligne_empanada.delete()
+
+    lignes = LigneCommande.objects.filter(commande=panier)
+    if lignes is None :
+        panier.delete()
+    else :
+        panier.save()
+
+    return redirect('/cart')
+
