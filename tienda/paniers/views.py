@@ -11,16 +11,18 @@ def afficherPanier(request):
     if non_payees.exists():
         panier = non_payees[0]
         lignes = LigneCommande.objects.filter(commande=panier)
-        
-        tot = 0
+
+        total_global = 0
         for ligne in lignes:
-            tot += ligne.prix
+            ligne.total = ligne.quantite * ligne.prix  
+            total_global += ligne.total  
+
     return render(
         request,
         'paniers/panier.html',
         {
             'panier': panier,
             'lignes': lignes,
-            'total' : tot
+            'total': total_global 
         },
     )
