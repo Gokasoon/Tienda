@@ -149,4 +149,29 @@ def payerPanier(request) :
     )
 
 
+def afficherCommandes(request) :
+    user = TiendaUser.objects.get(id=request.user.id)
+    orders = Commande.objects.filter(utilisateur=user, est_payee=True)
+
+    return render(
+        request,
+        'paniers/commandes.html',
+        {
+            'orders': orders,
+        },
+    )
     
+
+def afficherCommande(request, order_id) :
+    user = TiendaUser.objects.get(id=request.user.id)
+    order = Commande.objects.get(id=order_id)
+    lignes = LigneCommande.objects.filter(commande=order)
+
+    return render(
+        request,
+        'paniers/commande.html',
+        {
+            'lignes': lignes,
+            'order' : order,
+        },
+    )

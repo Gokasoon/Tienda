@@ -9,4 +9,7 @@ urlpatterns = [
     path('cart/delete/', views.viderPanier),
     path('cart/<int:empanada_id>/decrease/', views.retirerUneEmpanadaDuPanier),
     path('cart/pay/', views.payerPanier),
+
+    path('orders/', views.afficherCommandes),
+    path('order/<int:order_id>/', views.afficherCommande),
 ]
