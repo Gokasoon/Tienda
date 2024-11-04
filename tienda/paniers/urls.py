@@ -4,5 +4,5 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('cart/', views.afficherPanier),
-
+    path('cart/<int:empanada_id>/buy/', views.ajouterEmpanadaAuPanier),
 ]
