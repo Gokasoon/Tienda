@@ -118,6 +118,8 @@ def retirerUneEmpanadaDuPanier(request, empanada_id) :
     if ligne_empanada.quantite >= 1 :
         ligne_empanada.quantite -= 1
         ligne_empanada.prix -= ligne_empanada.empanada.prix
+        panier.prix_total -= ligne_empanada.empanada.prix
+        panier.save()
 
         if ligne_empanada.quantite == 0 :
             ligne_empanada.delete()
