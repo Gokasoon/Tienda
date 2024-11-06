@@ -1,0 +1,93 @@
+{% load static %}
+<!-- <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+    <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">
+                    <span data-feather="home"></span> Tableau de bord
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/empanadas">
+                    <span data-feather="file"></span> Les empanadas
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ingredients">
+                    <span data-feather="shopping-cart"></span> Les ingrédients
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ingredients/add">
+                    <span data-feather="users"></span> Créer un ingrédient
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/empanadas/add">
+                    <span data-feather="bar-chart-2"></span> Créer une empanada
+                </a>
+            </li>
+        </ul>
+    </div>
+</div> -->
+
+<div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <span class="fs-5 d-none d-sm-inline">Administration</span>
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li>
+                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                            <span class="ms-1 d-none d-sm-inline">Empanadas</span> </a>
+                        <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="/empanadas" class="nav-link px-0"> <span class="d-none d-sm-inline">Toutes</span> 1 </a>
+                            </li>
+                            <li>
+                                <a href="/empanadas/add" class="nav-link px-0"> <span class="d-none d-sm-inline">Ajouter</span> 2 </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
+                            <span class="ms-1 d-none d-sm-inline">Ingredients</span></a>
+                        <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                            <li class="w-100">
+                                <a href="/ingredients" class="nav-link px-0"> <span class="d-none d-sm-inline">Tous</span></a>
+                            </li>
+                            <li>
+                                <a href="/ingredients/add" class="nav-link px-0"> <span class="d-none d-sm-inline">Ajouter</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0 align-middle">
+                            <span class="ms-1 d-none d-sm-inline">Clients</span> </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0 align-middle">
+                            <span class="ms-1 d-none d-sm-inline">Commandes</span> </a>
+                    </li>
+                </ul>
+                <hr>
+                <span class="fs-5 d-none d-sm-inline">Statistiques</span>
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <span class="ms-1 d-none d-sm-inline">Revenus</span> </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <span class="ms-1 d-none d-sm-inline">Ventes</span> </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link px-0 align-middle">
+                                <span class="ms-1 d-none d-sm-inline">Activité récentes</span> </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col py-3">
