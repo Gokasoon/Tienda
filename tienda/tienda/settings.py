@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'empanadas',
     'comptes',
     'paniers',
+    'stats',
 ]
 
 MIDDLEWARE = [
@@ -128,5 +129,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = 'images/'
 MEDIA_ROOT = BASE_DIR / 'images/'
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

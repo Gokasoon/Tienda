@@ -1,6 +1,7 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from paniers import views
-from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('cart/', views.afficherPanier),
@@ -9,7 +10,8 @@ urlpatterns = [
     path('cart/delete/', views.viderPanier),
     path('cart/<int:empanada_id>/decrease/', views.retirerUneEmpanadaDuPanier),
     path('cart/pay/', views.payerPanier),
-
     path('orders/', views.afficherCommandes),
     path('order/<int:order_id>/', views.afficherCommande),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
