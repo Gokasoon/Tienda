@@ -1,0 +1,67 @@
+python -m venv en
+. ./env/Scripts/activate ou . ./env/bin/activate
+pip install django
+
+.gitignore :
+/env
+*.pyc
+
+python manage.py runserver -> start server
+
+django-admin startproject tienda -> créer projet
+python manage.py migrate -> setup BD
+
+Créer app :
+- python manage.py startapp nomApp
+- Ajouter nomApp dans settings.py/INSTALLED_APPS
+- Créer fichier 'urls.py' puis l'add dans le urls.py du projet 'path('', include('nomApp.urls')),'
+
+Modifier models.py :
+- changer les classes dans le fichier models.py
+- python manage.py makemigrations
+- python manage.py migrate
+
+Templates :
+- templates/nomApp/
+
+Bootstrap :
+-   dans header :    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+-   avant fin body : <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+Static : 
+- Dans la liste INSTALLED_APPS du fichier settings.py, vérifiez que la ligne 'django.contrib.staticfiles' est présente.
+- Vérifiez que la ligne STATIC_URL = 'static/' y figure aussi.
+- créer fichier static (ex /static/nomApp/css/styles.css)
+- {% load static %}
+- <link href="{% static 'nomApp/css/styles.css' %}" rel="stylesheet">
+
+
+Images :
+- Créer sous dossier : mainApp/images/imagesApp1
+- Ajouter dans 'settings.py' :  MEDIA_URL = 'images/'
+                                MEDIA_ROOT = BASE_DIR / 'images/'
+- Ajouter dans 'settings.py' à la variable TEMPLATES dans 'context_processors': [:   'django.template.context_processors.media',
+- Ajouter dans 'urls.py' :  from django.conf import settings
+                            from django.conf.urls.static import static
+                            ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+- pip install Pillow
+- <img src="{{MEDIA_URL}}{{user.image}}" class="rounded-circle" style="width: 10%;"/>
+
+
+Formulaires :
+- TP10 ?
+
+Comptes :
+- App Tienda/comptes
+
+Sécurisation :
+- user = None
+  if request.user.is_staff :
+      user = TiendaUser.objects.get(id=request.user.id)
+      empanada = Empanada.objects.get(idEmpanada = empanada_id)
+      empanada.delete()
+      return redirect('/empanadas')
+  elif request.user.is_authenticated :
+      return redirect('/empanadas')
+  else :
+      return redirect('/login')

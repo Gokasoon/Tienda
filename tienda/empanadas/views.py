@@ -42,7 +42,7 @@ def empanada(request, empanada_id) :
 def supprimerEmpanada(request, empanada_id) :
     user = None
     if request.user.is_staff :
-        user = TiendaTiendaUser.objects.get(id=request.user.id)
+        user = TiendaUser.objects.get(id=request.user.id)
         empanada = Empanada.objects.get(idEmpanada = empanada_id)
         empanada.delete()
         return redirect('/empanadas')
