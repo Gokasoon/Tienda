@@ -2,31 +2,39 @@ python -m venv en
 . ./env/Scripts/activate ou . ./env/bin/activate
 pip install django
 
+
 .gitignore :
 /env
 *.pyc
 
+
 python manage.py runserver -> start server
+
 
 django-admin startproject tienda -> créer projet
 python manage.py migrate -> setup BD
+
 
 Créer app :
 - python manage.py startapp nomApp
 - Ajouter nomApp dans settings.py/INSTALLED_APPS
 - Créer fichier 'urls.py' puis l'add dans le urls.py du projet 'path('', include('nomApp.urls')),'
 
+
 Modifier models.py :
 - changer les classes dans le fichier models.py
 - python manage.py makemigrations
 - python manage.py migrate
 
+
 Templates :
 - templates/nomApp/
+
 
 Bootstrap :
 -   dans header :    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 -   avant fin body : <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 
 Static : 
 - Dans la liste INSTALLED_APPS du fichier settings.py, vérifiez que la ligne 'django.contrib.staticfiles' est présente.
@@ -48,12 +56,6 @@ Images :
 - <img src="{{MEDIA_URL}}{{user.image}}" class="rounded-circle" style="width: 10%;"/>
 
 
-Formulaires :
-- TP10 ?
-
-Comptes :
-- App Tienda/comptes
-
 Sécurisation :
 - user = None
   if request.user.is_staff :
@@ -65,3 +67,13 @@ Sécurisation :
       return redirect('/empanadas')
   else :
       return redirect('/login')
+
+
+Formulaires :
+- TP6
+
+Comptes :
+- App Tienda/comptes
+- User custom : TP13 -> comptes/models.py
+- Gestion mdp : TP14
+
