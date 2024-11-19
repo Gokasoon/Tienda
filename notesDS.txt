@@ -77,3 +77,9 @@ Comptes :
 - User custom : TP13 -> comptes/models.py
 - Gestion mdp : TP14
 
+Panier :
+- TP15
+
+Commandes :
+-TP16
+
